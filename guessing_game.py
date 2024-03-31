@@ -1,8 +1,3 @@
-"""
-Python Development Techdegree
-Project 1 - The Number Guessing Game
---------------------------------
-"""
 
 # Import the random module.
 import random
@@ -12,6 +7,8 @@ def guess(num1, num2):
      
 # Create the start_game function.
 def start_game():
+    high_score = 0
+    number_of_tries = 0
     print("====================================\n  Welcome To The Guessing Game \n====================================")
 
     user_starting_number = int(input("Please choose a starting number:  "))
@@ -23,7 +20,6 @@ def start_game():
     random_number = random.randint(user_starting_number, user_ending_number)
     print(random_number)
     user_guess = guess(user_starting_number, user_ending_number)
-    number_of_tries = 0
     while user_guess != random_number:
         number_of_tries += 1
         if user_guess > random_number:
@@ -36,8 +32,11 @@ def start_game():
         print("Your guess of {}, was the correct number. It took you {} tries".format(user_guess, number_of_tries))
     else: 
         print("Your guess of {}, was the correct number. It took you {} try".format(user_guess, number_of_tries))
-
-    play_again = input("Congrats, would you like to try again?(y/n):   ")
+    
+    if high_score < number_of_tries:
+        high_score = number_of_tries```
+        print("Congrats you have the new high score, {}!".format(high_score))
+    play_again = input("Would you like to try again?(y/n):   ")
     print(play_again)
     while play_again != "n" and play_again != "y":
         play_again = input("Congrats, would you like to try again?(y/n):   ")
