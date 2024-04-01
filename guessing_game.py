@@ -49,7 +49,10 @@ def start_game():
                         try:
                             while user_guess != random_number:
                                 number_of_tries += 1
-                                if user_guess > random_number:
+                                if user_guess < user_starting_number or user_guess > user_ending_number:
+                                    print("That number is not in range of {} and {}".format(user_starting_number, user_ending_number))
+
+                                elif user_guess > random_number:
                                     print("It's lower")
                                 elif user_guess < random_number:
                                     print("It's higher")
