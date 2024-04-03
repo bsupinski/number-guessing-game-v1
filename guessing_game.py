@@ -11,11 +11,16 @@ def guess(num1, num2):
         print("Please choose a whole number")
      
 # Create the start_game function.
+
+
 def start_game():
     high_score = 0
     number_of_tries = 0
     print("====================================\n  Welcome To The Guessing Game \n====================================")
     #User chooses two numbers
+    if high_score < 0:
+        print("There is current no high score")
+    else: print("The high score is currently {}".format(high_score))
     try:
         user_starting_number = int(input("Please choose a starting number:  "))
     except ValueError:
