@@ -2,89 +2,74 @@
 # Import the random module.
 import random
 
-def guess(num1, num2):
-    try:
-        return int(input("Guess a number from {} and {}:   ".format(num1, num2)))
-    except ValueError:
-        print("Please choose a whole number")
-    except TypeError:
-        print("Please choose a whole number")
-     
-# Create the start_game function.
+high_score = 0
 
-
-def start_game():
-    high_score = 0
-    number_of_tries = 0
-    print("====================================\n  Welcome To The Guessing Game \n====================================")
-    #User chooses two numbers
-    if high_score < 0:
-        print("There is current no high score")
-    else: print("The high score is currently {}".format(high_score))
-    try:
-        user_starting_number = int(input("Please choose a starting number:  "))
-    except ValueError:
-        print("Please choose a whole number")
+def welcome_message(highscore):
+    print("""
+===========================
+    Guess a Number Game
+=========================== \n\n
+""") 
+    if highscore == None:
+        print("There is no highscore currently")
     else:
-        try:
-            user_ending_number = int(input("Please choose an ending number higher than, {}:  ".format(user_starting_number)))
+        print("The highscore is currently {}".format(highscore))
+
+def choose_number(msg):
+    while True:
+        try: 
+            num = int(input(msg))
+        except TypeError:
+            print("Sorry that is not a whole number.")
         except ValueError:
-            print("Please choose a whole number")
+            print("Sorry that is not a whole number.")
         else:
-            #Check to make sure first number is smaller than second number
-            while user_starting_number + 2 > user_ending_number:
-                print("Sorry that number is not high enough than your starting number to have numbers inbetween ({}). Try again".format(user_starting_number))
-                try:
-                    user_ending_number = int(input("Choose a new number:   "))
-                except ValueError:
-                    print("Please choose a whole number")
-            else:
-                #Choose a random number from both numbers
-                try:
-                    random_number = random.randint(user_starting_number, user_ending_number)
-                except ValueError:
-                    print("Please choose a whole number")
-                else:
-                    #User guesses a number, till correct
-                    try:
-                        user_guess = guess(user_starting_number, user_ending_number)
-                    except ValueError:
-                        print("Please guess a whole number")
-                    else:
-                        try:
-                            while user_guess != random_number:
-                                number_of_tries += 1
-                                if user_guess < user_starting_number or user_guess > user_ending_number:
-                                    print("That number is not in range of {} and {}".format(user_starting_number, user_ending_number))
+            return num
+   
+def check_higher_number(num1,num2):
+    while num2 <= num1 + 3:
+        print("Your first number was {}".format(num1))
+        num2 = choose_number("Please choose your a number 4 numbers higher than first:   ")
+    print(num1, num2)
+    return random.randint(num1, num2)
 
-                                elif user_guess > random_number:
-                                    print("It's lower")
-                                elif user_guess < random_number:
-                                    print("It's higher")
-                                else:
-                                    print("Not a number")
-                                
-                                user_guess = guess(user_starting_number, user_ending_number)
-                            number_of_tries += 1
-                        except TypeError:
-                            print("That's not a number please start the game again.")
-                        else:
-                            #Print winning message
-                            if number_of_tries > 1:
-                                print("Your guess of {}, was the correct number. It took you {} tries".format(user_guess, number_of_tries))
-                            else: 
-                                print("Your guess of {}, was the correct number. It took you {} try".format(user_guess, number_of_tries))
-                            #Print high score message if new high score.
-                            if high_score < number_of_tries:
-                                high_score = number_of_tries
-                                print("Congrats you have the new high score, {}!".format(high_score))
-                            play_again = input("Would you like to try again?(y/n):   ")
-                            print(play_again)
-                            while play_again != "n" and play_again != "y":
-                                print(play_again)
-                            if play_again == "y":
-                                start_game()
-                            else:
-                                print("Thanks for playing, till next time")
 
-start_game()
+def guess_number(num1, num2, randnum):
+    total_guesses = 0
+    guessed = choose_number("Please choose a number from {} to {}.   ".format(num1, num2))
+    while guessed != randnum:                 
+        total_guesses += 1
+        if guessed < num1 or guessed > num2:
+            print("{} is not in the number range.".format(guessed))
+            guessed = choose_number("Please choose a number from {} to {}:   ".format(num1, num2))
+        else:
+            guessed = choose_number("{} is not the correct number. Try again:   ".format(guessed))
+    total_guesses += 1
+    return total_guesses
+
+def new_highscore(guesses, highscore):
+    if highscore == 0:
+        high_score = guesses
+        print("Congrats you guessed the number in {}. You have the new high score!".format(guesses))
+    elif highscore < guesses:
+        high_score = guesses
+        print("Congrats you guessed the number in {}. You have the new high score!".format(guesses))
+    else: 
+        high_score = highscore
+        print("Congrats you guessed the number in {}. But the high score ".format(guesses, high_score))
+    return high_score
+    
+
+
+def start_game(highscore):
+    welcome_message(highscore)
+    first_number = choose_number("Please choose your lower number:   ")
+    second_number = choose_number("Please choose your a number 4 numbers higher than first:   ")
+    random_number = check_higher_number(first_number, second_number)
+    total_guesses = guess_number(first_number, second_number, random_number)
+    new_score = new_highscore(total_guesses, highscore)
+    print(new_score)
+    
+
+
+start_game(high_score)
