@@ -8,12 +8,12 @@ def welcome_message(highscore):
     print("""
 ===========================
     Guess a Number Game
-=========================== \n\n
+=========================== \n
 """) 
-    if highscore == None:
-        print("There is no highscore currently")
+    if highscore == 0:
+        print("There is no highscore currently.\n")
     else:
-        print("The highscore is currently {}".format(highscore))
+        print("The highscore is currently {}.\n".format(highscore))
 
 def choose_number(msg):
     while True:
@@ -29,10 +29,18 @@ def choose_number(msg):
 def check_higher_number(num1,num2):
     while num2 <= num1 + 3:
         print("Your first number was {}".format(num1))
-        num2 = choose_number("Please choose your a number 4 numbers higher than first:   ")
-    print(num1, num2)
-    return random.randint(num1, num2)
+        num2 = choose_number("Please choose a number 4 numbers higher than first:   ")
+    return random.randint(num1, num2), num2
 
+def play_again(highscore):
+    user_answer = input("Would you like to play again?(Yes/No)   ")
+    while user_answer.lower() != "yes" and user_answer.lower() != "no":
+        print("Please choose Yes or No")
+        user_answer = input("Would you like to play again?(Yes/No)   ")
+    if user_answer == "no":
+        print("Thank you for playing.")
+    else:
+        start_game(highscore)
 
 def guess_number(num1, num2, randnum):
     total_guesses = 0
@@ -51,25 +59,23 @@ def new_highscore(guesses, highscore):
     if highscore == 0:
         high_score = guesses
         print("Congrats you guessed the number in {}. You have the new high score!".format(guesses))
-    elif highscore < guesses:
+    elif highscore > guesses:
         high_score = guesses
         print("Congrats you guessed the number in {}. You have the new high score!".format(guesses))
     else: 
         high_score = highscore
-        print("Congrats you guessed the number in {}. But the high score ".format(guesses, high_score))
+        print("Congrats you guessed the number in {}. But the high score is {}.".format(guesses, high_score))
     return high_score
     
-
 
 def start_game(highscore):
     welcome_message(highscore)
     first_number = choose_number("Please choose your lower number:   ")
-    second_number = choose_number("Please choose your a number 4 numbers higher than first:   ")
-    random_number = check_higher_number(first_number, second_number)
+    second_number = choose_number("Please choose your a 4 numbers higher than first:   ")
+    random_number, second_number = check_higher_number(first_number, second_number)
     total_guesses = guess_number(first_number, second_number, random_number)
     new_score = new_highscore(total_guesses, highscore)
-    print(new_score)
+    play_again(new_score)
     
-
 
 start_game(high_score)
