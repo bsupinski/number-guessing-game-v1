@@ -29,7 +29,7 @@ def choose_number(msg):
 def check_higher_number(num1,num2):
     while num2 <= num1 + 3:
         print("Your first number was {}".format(num1))
-        num2 = choose_number("Please choose a number 4 numbers higher than first:   ")
+        num2 = choose_number("Please choose a number at least four numbers higher than first:   ")
     return random.randint(num1, num2), num2
 
 def play_again(highscore):
@@ -51,11 +51,11 @@ def guess_number(num1, num2, randnum):
             print("{} is not in the number range.".format(guessed))
             guessed = choose_number("Please choose a number from {} to {}:   ".format(num1, num2))
         elif guessed < randnum:
-            print("The number is Higher")
+            print("The number is `Higher`")
             guessed = choose_number("Please choose a number from {} to {}:   ".format(num1, num2))
         elif guessed > randnum:
-            print("The number is Lower")
-            guessed = choose_number("Please choose a number from {} to {}:   ".format(num1, num2))
+            print("The number is `Lower`")
+            guessed = choose_number("Please choose a number from {} to {}:   ".format(num1, num2))   
     total_guesses += 1
     return total_guesses
 
@@ -63,12 +63,15 @@ def new_highscore(guesses, highscore):
     if highscore == 0:
         high_score = guesses
         print("Congrats you guessed the number in {}. You have the new high score!".format(guesses))
+    elif guesses == highscore:
+        high_score = guesses
+        print("Congrats you guessed the number in {} attemps. You tied the high score.".format(guesses))
     elif highscore > guesses:
         high_score = guesses
-        print("Congrats you guessed the number in {}. You have the new high score!".format(guesses))
+        print("Congrats you guessed the number in {} attemps. You have the new high score!".format(guesses))
     else: 
         high_score = highscore
-        print("Congrats you guessed the number in {}. But the high score is {}.".format(guesses, high_score))
+        print("Congrats you guessed the number in {} attempts. But the high score is {}.".format(guesses, high_score))
     return high_score
     
 
