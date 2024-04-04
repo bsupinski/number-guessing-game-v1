@@ -50,8 +50,12 @@ def guess_number(num1, num2, randnum):
         if guessed < num1 or guessed > num2:
             print("{} is not in the number range.".format(guessed))
             guessed = choose_number("Please choose a number from {} to {}:   ".format(num1, num2))
-        else:
-            guessed = choose_number("{} is not the correct number. Try again:   ".format(guessed))
+        elif guessed < randnum:
+            print("The number is Higher")
+            guessed = choose_number("Please choose a number from {} to {}:   ".format(num1, num2))
+        elif guessed > randnum:
+            print("The number is Lower")
+            guessed = choose_number("Please choose a number from {} to {}:   ".format(num1, num2))
     total_guesses += 1
     return total_guesses
 
@@ -71,7 +75,7 @@ def new_highscore(guesses, highscore):
 def start_game(highscore):
     welcome_message(highscore)
     first_number = choose_number("Please choose your lower number:   ")
-    second_number = choose_number("Please choose your a 4 numbers higher than first:   ")
+    second_number = choose_number("Please choose a number four numbers higher than first:   ")
     random_number, second_number = check_higher_number(first_number, second_number)
     total_guesses = guess_number(first_number, second_number, random_number)
     new_score = new_highscore(total_guesses, highscore)
